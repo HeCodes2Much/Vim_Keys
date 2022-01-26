@@ -1,3 +1,14 @@
+
+" -------------------------------------------------------------------------
+" Path          - .config/nvim/plugin/vimkeys.vim
+" GitHub        - https://github.com/The-Repo-Club/
+" Author        - The-Repo-Club [wayne6324@gmail.com]
+" Start On      - Wed 26 January 2022, 06:02:53 pm (GMT)
+" Modified On   - Wed 26 January 2022, 06:13:50 pm (GMT) 
+" -------------------------------------------------------------------------
+" Version=2022.01.26
+" -------------------------------------------------------------------------
+"
 " backspace and cursor keys wrap to previous/next line
 set backspace=indent,eol,start whichwrap+=<,>,[,]
 
