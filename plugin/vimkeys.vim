@@ -40,9 +40,9 @@ noremap <C-Q>		<C-V>
 
 " Use CTRL-S for saving, also in Insert mode (<C-O> doesn't work well when
 " using completions).
-noremap <C-S>		:update<CR>
-vnoremap <C-S>		<C-C>:update<CR>
-inoremap <C-S>		<Esc>:update<CR>gi
+noremap <C-S>		:w<CR>
+vnoremap <C-S>		<C-C>:w<CR>
+inoremap <C-S>		<Esc>:w<CR>gi
 
 " CTRL-Z is Undo; not in cmdline though
 noremap <C-Z> u
