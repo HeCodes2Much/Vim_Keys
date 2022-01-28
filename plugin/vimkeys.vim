@@ -4,11 +4,30 @@
 " GitHub        - https://github.com/The-Repo-Club/
 " Author        - The-Repo-Club [wayne6324@gmail.com]
 " Start On      - Wed 26 January 2022, 06:02:53 pm (GMT)
-" Modified On   - Wed 26 January 2022, 06:13:50 pm (GMT) 
+" Modified On   - Fri 28 January 2022, 04:56:39 pm (GMT) 
 " -------------------------------------------------------------------------
 " Version=2022.01.26
 " -------------------------------------------------------------------------
 "
+" Set options and add mapping such that Vim behaves a lot like MS-Windows
+"
+" -------------------------------------------------------------------------
+"
+
+" Bail out if this isn't wanted.
+if exists("g:skip_loading_mswin") && g:skip_loading_mswin
+  finish
+endif
+
+" set the 'cpoptions' to its Vim default
+if 1	" only do this when compiled with expression evaluation
+  let s:save_cpo = &cpoptions
+endif
+set cpo&vim
+
+" set 'selection', 'selectmode', 'mousemodel' and 'keymodel' for MS-Windows
+behave mswin
+
 " backspace and cursor keys wrap to previous/next line
 set backspace=indent,eol,start whichwrap+=<,>,[,]
 
@@ -55,6 +74,12 @@ noremap <C-S>		:w<CR>
 vnoremap <C-S>		<C-C>:w<CR>
 inoremap <C-S>		<Esc>:w<CR>gi
 
+" For CTRL-V to work autoselect must be off.
+" On Unix we have two selections, autoselect can be used.
+if !has("unix")
+  set guioptions-=a
+endif
+
 " CTRL-Z is Undo; not in cmdline though
 noremap <C-Z> u
 inoremap <C-Z> <C-O>u
@@ -62,6 +87,13 @@ inoremap <C-Z> <C-O>u
 " CTRL-Y is Redo (although not repeat); not in cmdline though
 noremap <C-Y> <C-R>
 inoremap <C-Y> <C-O><C-R>
+
+" Alt-Space is System menu
+if has("gui")
+  noremap <M-Space> :simalt ~<CR>
+  inoremap <M-Space> <C-O>:simalt ~<CR>
+  cnoremap <M-Space> <C-C>:simalt ~<CR>
+endif
 
 " CTRL-A is Select all
 noremap <C-A> gggH<C-O>G
@@ -82,3 +114,23 @@ noremap <C-F4> <C-W>c
 inoremap <C-F4> <C-O><C-W>c
 cnoremap <C-F4> <C-C><C-W>c
 onoremap <C-F4> <C-C><C-W>c
+
+if has("gui")
+  " CTRL-F is the search dialog
+  noremap  <expr> <C-F> has("gui_running") ? ":promptfind\<CR>" : "/"
+  inoremap <expr> <C-F> has("gui_running") ? "\<C-\>\<C-O>:promptfind\<CR>" : "\<C-\>\<C-O>/"
+  cnoremap <expr> <C-F> has("gui_running") ? "\<C-\>\<C-C>:promptfind\<CR>" : "\<C-\>\<C-O>/"
+
+  " CTRL-H is the replace dialog,
+  " but in console, it might be backspace, so don't map it there
+  nnoremap <expr> <C-H> has("gui_running") ? ":promptrepl\<CR>" : "\<C-H>"
+  inoremap <expr> <C-H> has("gui_running") ? "\<C-\>\<C-O>:promptrepl\<CR>" : "\<C-H>"
+  cnoremap <expr> <C-H> has("gui_running") ? "\<C-\>\<C-C>:promptrepl\<CR>" : "\<C-H>"
+endif
+
+" restore 'cpoptions'
+set cpo&
+if 1
+  let &cpoptions = s:save_cpo
+  unlet s:save_cpo
+endif
